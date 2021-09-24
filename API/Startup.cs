@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,9 @@ namespace API
         x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
 
       services.AddScoped<IProductRepository, ProductRepository>();
+      services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+
+      services.AddAutoMapper(typeof(MappingProfiles));
 
       services.AddSwaggerGen(c =>
       {
@@ -49,6 +53,8 @@ namespace API
       // app.UseHttpsRedirection();
 
       app.UseRouting();
+
+      app.UseStaticFiles();
 
       app.UseAuthorization();
 
