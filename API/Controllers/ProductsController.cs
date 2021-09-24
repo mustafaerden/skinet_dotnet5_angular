@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
+using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -53,6 +53,8 @@ namespace API.Controllers
       var spec = new ProductsWithTypesAndBrandsSpecification(id);
 
       var product = await _productsRepo.GetEntityWithSpec(spec);
+
+      if (product == null) return NotFound(new ApiResponse(404));
 
       return _mapper.Map<Product, ProductToReturnDto>(product);
     }
